@@ -64,18 +64,22 @@ int main() {
 			}
 		}
 
-        float dt = clock.restart().asSeconds();
-        update(player, dt);
-        update_bot(bot, dt);
-        collision_detect(player, bot);
-        bound(player);
-        bound(bot);
+    // Выход через Esc
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
+      game_work = false;
+
+    float dt = clock.restart().asSeconds();
+    update(player, dt);
+    update_bot(bot, dt);
+    collision_detect(player, bot);
+    bound(player);
+    bound(bot);
 		window.clear(BG_COLOR); // заливка экрана
-        draw(window, player, SCALE, player.anglerot);
-        draw(window, bot, SCALE, bot.anglerot);
-        draw_text(window, "hello", 50, 50, 50, sf::Color(255,255,0));
+    draw(window, player, SCALE, player.anglerot);
+    draw(window, bot, SCALE, bot.anglerot);
+    draw_text(window, "hello", 50, 50, 50, sf::Color(255,255,0));
 		window.display(); // показать кадр на экране
 	}
 
-    window.close();
+  window.close();
 }
