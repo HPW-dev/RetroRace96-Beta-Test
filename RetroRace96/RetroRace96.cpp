@@ -10,8 +10,19 @@
 #include "font.hpp"
 #include "sound.hpp"
 #include "test.hpp"
+#include "lan.hpp"
+
+void lan_config() {
+  std::cout << "Game mode:\n";
+  std::cout << "1 - Server/Single\n";
+  std::cout << "2 - Client\n";
+  std::string mode;
+  std::getline(std::cin, mode);
+  lan_start(mode == "1");
+}
 
 int main() {
+    lan_config();
     load_settings();
 
     if (config["TEST"] == "1") {
