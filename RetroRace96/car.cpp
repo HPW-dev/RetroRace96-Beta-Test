@@ -230,7 +230,7 @@ void draw(sf::RenderWindow& window, const Car& car, float scale, float angle) {
 static void physic(Car& car, float dt, bool left, bool right, bool accel, bool reverce) {
     float speed = std::sqrt(car.vx*car.vx + car.vy*car.vy);
     speed = std::min<float>(speed, car.speed_max);
-    std::cout << "speed: " << speed;
+    //std::cout << "speed: " << speed;
 
     //car.anglerot = sf::radians(std::atan2(car.vx, car.vy)).asDegrees();
 
@@ -247,7 +247,7 @@ static void physic(Car& car, float dt, bool left, bool right, bool accel, bool r
         car.anglerot = 360.0 - car.anglerot;
     auto dx = std::cos(rad);
     auto dy = std::sin(rad);
-    std::cout << ", angle " << car.anglerot;
+    //std::cout << ", angle " << car.anglerot;
     
     // Speed Addition
     if (accel) {
@@ -279,7 +279,7 @@ static void physic(Car& car, float dt, bool left, bool right, bool accel, bool r
     car.x += car.vx * dt;
     car.y += car.vy * dt;
 
-    std::cout << std::endl;
+    //std::cout << std::endl;
 }
 
 void update(Car& car, float dt) {
@@ -287,13 +287,13 @@ void update(Car& car, float dt) {
     bool right = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D);
     bool accel = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W);
     bool reverce = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S);
-    std::cout << "player: ";
+    //std::cout << "player: ";
     physic(car, dt, left, right, accel, reverce);
 }
 
 void update_bot(Car& car, float dt) {
     bool left = rand() % 4;
-    std::cout << "bot: ";
+    //std::cout << "bot: ";
     physic(car, dt, left, !left, true, false);
 }
 
