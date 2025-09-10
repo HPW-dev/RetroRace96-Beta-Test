@@ -3,6 +3,7 @@
 #include <cmath>
 #include "graphic.hpp"
 #include "car.hpp"
+#include "lan.hpp"
 #include "font.hpp"
 #include "sound.hpp"
 
@@ -287,23 +288,27 @@ static void physic(Car& car, float dt, bool left, bool right, bool accel, bool r
 }
 
 void update(Car& car, float dt) {
-    bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A);
-    bool right = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D);
-    bool accel = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W);
-    bool reverce = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S);
+    bool left    = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A);
+    bool right   = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D);
+    bool accel   = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W);
+    bool reverce = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S);
     //std::cout << "player: ";
     physic(car, dt, left, right, accel, reverce);
 }
 
 void update_client(Car& car, float dt) {
-  /*
-  bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A);
-  bool right = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D);
-  bool accel = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W);
-  bool reverce = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S);
-  //std::cout << "player: ";
+  bool left = false;
+  bool right = false;
+  bool accel = false;
+  bool reverce = false;
+  for (const auto& msg : get_messages()) {
+    if (msg == "KEY:L") left |= true;
+    if (msg == "KEY:R") right |= true;
+    if (msg == "KEY:U") accel |= true;
+    if (msg == "KEY:D") reverce |= true;
+    std::cout << "message: " << msg << std::endl;
+  }
   physic(car, dt, left, right, accel, reverce);
-  */
 }
 
 void update_bot(Car& car, float dt) {

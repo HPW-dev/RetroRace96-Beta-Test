@@ -11,6 +11,7 @@
 #include "sound.hpp"
 #include "test.hpp"
 #include "lan.hpp"
+#include "client.hpp"
 
 void lan_config() {
   std::cout << "Game mode:\n";
@@ -44,16 +45,19 @@ int main() {
     load_fonts();
     load_textures();
     load_sounds();
+
     std::vector<Car> players;
-    players.push_back(make_player(true));
-    players.push_back(make_player(false));
-    players.push_back(make_bot());
-    players.at(0).x = 100;
-    players.at(0).y = 200;
-    players.at(1).x = 200;
-    players.at(1).y = 300;
-    players.at(2).x = 300;
-    players.at(2).y = 400;
+    if (server_mode()) {
+      players.push_back(make_player(true));
+      players.push_back(make_player(false));
+      players.push_back(make_bot());
+      players.at(0).x = 100;
+      players.at(0).y = 200;
+      players.at(1).x = 200;
+      players.at(1).y = 300;
+      players.at(2).x = 300;
+      players.at(2).y = 400;
+    }
 
     // главный цикл
     while (window.isOpen()) {
@@ -74,24 +78,31 @@ int main() {
 
     float dt = clock.restart().asSeconds();
 
-    for (auto& p : players) {
-      if (p.type == Type::server) update(p, dt);
-      if (p.type == Type::client) update_client(p, dt);
-      if (p.type == Type::bot) update_bot(p, dt);
-      bound(p);
-    }
+    if (server_mode()) {
+      for (auto& p : players) {
+        if (p.type == Type::server) update(p, dt);
+        if (p.type == Type::client) update_client(p, dt);
+        if (p.type == Type::bot) update_bot(p, dt);
+        bound(p);
+      }
 
-    for (auto& a : players)
-    for (auto& b : players) {
-      if (&a == &b)
-        continue;
-      collision_detect(a, b);
+      for (auto& a : players)
+        for (auto& b : players) {
+          if (&a == &b)
+            continue;
+          collision_detect(a, b);
+        }
+    } else {
+      client_update(dt);
     }
 
 		window.clear(BG_COLOR); // заливка экрана
-    for (auto& p : players)
-      draw(window, p, SCALE, p.anglerot);
-    draw_text(window, "hello", 50, 50, 50, sf::Color(255,255,0));
+    if (server_mode()) {
+      for (auto& p : players)
+        draw(window, p, SCALE, p.anglerot);
+    } else {
+      client_draw(window);
+    }
 		window.display(); // показать кадр на экране
 	}
 

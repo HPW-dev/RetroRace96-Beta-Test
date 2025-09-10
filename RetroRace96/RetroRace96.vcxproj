@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="car.cpp" />
+    <ClCompile Include="client.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="graphic.cpp" />
     <ClCompile Include="lan.cpp" />
@@ -142,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="car.hpp" />
+    <ClInclude Include="client.hpp" />
     <ClInclude Include="graphic.hpp" />
     <ClInclude Include="lan.hpp" />
     <ClInclude Include="settings.hpp" />

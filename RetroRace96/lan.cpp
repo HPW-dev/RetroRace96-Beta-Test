@@ -75,3 +75,5 @@ void send_message(const Message& msg) {
 			std::cerr << "error while sending data to server\n";
 	}
 }
+
+bool server_mode() { return is_server; }
