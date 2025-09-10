@@ -96,14 +96,14 @@ int main() {
       client_update(dt);
     }
 
-		window.clear(BG_COLOR); // заливка экрана
     if (server_mode()) {
+		  window.clear(BG_COLOR); // заливка экрана
       for (auto& p : players)
         draw(window, p, SCALE, p.anglerot);
+		  window.display(); // показать кадр на экране
     } else {
       client_draw(window);
     }
-		window.display(); // показать кадр на экране
 	}
 
   window.close();

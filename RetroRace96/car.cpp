@@ -227,6 +227,17 @@ Car make_bot() {
 }
 
 void draw(sf::RenderWindow& window, const Car& car, float scale, float angle) {
+  if (server_mode()) {
+    std::string msg;
+    msg += "TEXTURE";
+    msg += ":" + std::to_string(car.x);
+    msg += ":" + std::to_string(car.y);
+    msg += ":" + car.skin;
+    msg += ":" + std::to_string(scale);
+    msg += ":" + std::to_string(angle);
+    send_message(msg);
+  }
+
     draw_texture(window, car.x, car.y, car.skin, scale, angle);
     float speed = std::sqrt(car.vx*car.vx + car.vy*car.vy);
     draw_text(window, "Speed: " + std::to_string(int(speed)), car.x, car.y+40, 18, sf::Color(255,0,0));
@@ -306,7 +317,6 @@ void update_client(Car& car, float dt) {
     if (msg == "KEY:R") right |= true;
     if (msg == "KEY:U") accel |= true;
     if (msg == "KEY:D") reverce |= true;
-    std::cout << "message: " << msg << std::endl;
   }
   physic(car, dt, left, right, accel, reverce);
 }
