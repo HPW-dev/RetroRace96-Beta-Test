@@ -213,12 +213,16 @@ static std::map<std::string, Car> cars {
     }},
 };
 
-Car make_player() {
-    return cars.at("BMW Bonus"); // Car of Player(DEBUG Mode)
+Car make_player(bool is_server) {
+  Car ret = cars.at("BMW Bonus");
+  ret.type = (is_server ? Type::server : Type::client);
+  return ret;
 }
 
 Car make_bot() {
-    return cars.at("SUPRA Bonus"); // Car of Bot 1
+  Car ret = cars.at("SUPRA Bonus");
+  ret.type = Type::bot;
+  return ret;
 }
 
 void draw(sf::RenderWindow& window, const Car& car, float scale, float angle) {
@@ -289,6 +293,17 @@ void update(Car& car, float dt) {
     bool reverce = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S);
     //std::cout << "player: ";
     physic(car, dt, left, right, accel, reverce);
+}
+
+void update_client(Car& car, float dt) {
+  /*
+  bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A);
+  bool right = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D);
+  bool accel = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W);
+  bool reverce = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S);
+  //std::cout << "player: ";
+  physic(car, dt, left, right, accel, reverce);
+  */
 }
 
 void update_bot(Car& car, float dt) {

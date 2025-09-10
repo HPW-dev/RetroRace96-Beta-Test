@@ -2,7 +2,14 @@
 #include <string>
 #include "settings.hpp"
 
+enum class Type {
+  server,
+  client,
+  bot,
+};
+
 struct Car {
+    Type type{};
     // center of car(in pos)
     float x {};
     float y {};
@@ -24,9 +31,10 @@ struct Car {
 };
 
 Car make_bot();
-Car make_player();
+Car make_player(bool is_server);
 void draw(sf::RenderWindow& window, const Car& car, float scale=1, float angle=0);
 void update(Car& car, float dt);
 void update_bot(Car& car, float dt);
+void update_client(Car& car, float dt);
 void bound(Car& car);
 void collision_detect(Car& a, Car& b);

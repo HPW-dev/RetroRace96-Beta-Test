@@ -44,12 +44,16 @@ int main() {
     load_fonts();
     load_textures();
     load_sounds();
-    auto player = make_player();
-    auto bot = make_bot();
-    player.x = 100;
-    player.y = 200;
-    bot.x = 200;
-    bot.y = 300;
+    std::vector<Car> players;
+    players.push_back(make_player(true));
+    players.push_back(make_player(false));
+    players.push_back(make_bot());
+    players.at(0).x = 100;
+    players.at(0).y = 200;
+    players.at(1).x = 200;
+    players.at(1).y = 300;
+    players.at(2).x = 300;
+    players.at(2).y = 400;
 
     // главный цикл
     while (window.isOpen()) {
@@ -69,14 +73,24 @@ int main() {
       game_work = false;
 
     float dt = clock.restart().asSeconds();
-    update(player, dt);
-    update_bot(bot, dt);
-    collision_detect(player, bot);
-    bound(player);
-    bound(bot);
+
+    for (auto& p : players) {
+      if (p.type == Type::server) update(p, dt);
+      if (p.type == Type::client) update_client(p, dt);
+      if (p.type == Type::bot) update_bot(p, dt);
+      bound(p);
+    }
+
+    for (auto& a : players)
+    for (auto& b : players) {
+      if (&a == &b)
+        continue;
+      collision_detect(a, b);
+    }
+
 		window.clear(BG_COLOR); // заливка экрана
-    draw(window, player, SCALE, player.anglerot);
-    draw(window, bot, SCALE, bot.anglerot);
+    for (auto& p : players)
+      draw(window, p, SCALE, p.anglerot);
     draw_text(window, "hello", 50, 50, 50, sf::Color(255,255,0));
 		window.display(); // показать кадр на экране
 	}
